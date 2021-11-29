@@ -1,5 +1,6 @@
 from Configuration.configuration import engine
 import pandas as pd
+import random 
 from textblob import TextBlob
 
 def authors():
@@ -38,8 +39,15 @@ def quotes_episode(author,episode):
     ON Episodes.id_Episode=Quotes.Episodes_id_Episode
     WHERE Name_Author= '{author}' AND Title_Episode= '{episode}';
     """
-    data = pd.read_sql_query(query, engine)
+    data = pd.read_sql_query(query,engine)
     return data.to_json(orient='records')
+
+def new_quote(episode,author,quote):
+    engine.execute(f"""
+    INSERT INTO Quotes (Episodes_id_Episode,Authors_id_Author,Text)
+    VALUES ({episode}, {author}, '{quote}');
+    """)
+    return f"Your quote has been successfully included: {episode} {author} {quote}"
 
 
 

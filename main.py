@@ -1,6 +1,5 @@
 from flask import Flask, request, jsonify
 import SRC.main_tools as mt
-import SRC.sql_tools as sq
 
 app = Flask(__name__)
 
@@ -33,7 +32,12 @@ def quotes_episode(author,episode):
     line_episode = mt.quotes_episode(author,episode)
     return jsonify(line_episode)
 
-
+@app.route("/newquote", methods=["POST"])
+def insertquote():
+    episode = request.form.get('episode')
+    author = request.form.get('author')
+    quote = request.form.get('quote')
+    return mt.new_quote(episode,author,quote)
 
 if __name__ == '__main__':
     app.run(debug=True)
