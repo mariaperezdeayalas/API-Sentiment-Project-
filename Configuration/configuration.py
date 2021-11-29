@@ -5,7 +5,7 @@ import os
 
 dotenv.load_dotenv()
 
-password = os.getenv('pass_sql')
+password = os.getenv('password')
 dbName="Friends_API"
 connectionData=f"mysql+pymysql://root:{password}@localhost/{dbName}"
 engine = alch.create_engine(connectionData)
