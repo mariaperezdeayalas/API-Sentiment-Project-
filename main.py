@@ -34,10 +34,17 @@ def quotes_episode(author,episode):
 
 @app.route("/newquote", methods=["POST"])
 def insertquote():
-    episode = request.form.get('episode')
-    author = request.form.get('author')
     quote = request.form.get('quote')
-    return mt.new_quote(episode,author,quote)
+    author = request.form.get('author')
+    episode = request.form.get('episode')
+    return mt.new_quote(quote,author,episode)
+
+@app.route("/sentiment/<author>/<episode>")
+def sentiment_author(author,episode):
+    df = mt.sentiment_analysis(author,episode)
+    df['Tokenized'] = df['Text'].apply(mt.tokenizer)
+    df['Sentiments'] = df['Tokenized'].apply(mt.sentiment)
+    return str(df.Sentiments.mean())
 
 if __name__ == '__main__':
     app.run(debug=True)
